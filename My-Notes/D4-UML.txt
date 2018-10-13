@@ -1,0 +1,12 @@
+# UML - Unified modeling language, is unified formed by 4 persons they unified their own modeling language.
+High level and low level design doc all contains UML diagrams.
+We share project documnetion by UML and OOAD now days.
+# star uml is a freeware to draw UML diagram
+
+# If we are building an application from scratch then we need below diagrams
+Req
+Algorithm or Pseudocode or UML diagrams
+ER diagrams
+
+# Component diagram will never show you a node but deployment diagram does
+# When you follow thing you will not create flow chart you create Activity diagram

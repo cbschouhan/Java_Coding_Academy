@@ -1,0 +1,35 @@
+Git hub notes
+
+We will be using GIThub , GITbucket, GIT Lab
+
+
+# Create new repository. Public is free and private is paid. Readme file is the first file that everybody reads put descition 
+# INstall GIT bash
+We are going to use command line because you going to be on a server and server don't have visual interface, server usages command line.
+the command line is the only place you can run all Git commands — most of the GUIs implement only a partial subset of Git functionality for simplicity. 
+# If we create any files in local directory then it will not be directly available in GIT
+
+Command											Desciption
+git --version									Get version
+pwd												Unix command to get print working directory
+mkdir NewDir									Create new directory
+cd NewDir										change directory
+ctrl+l to										clear screen
+git status										gives untracked file in red
+
+/*If latest file and folder is created in GITWeb*/
+git clone https_url_from_git_web_version		clone from git web folder to local machine
+
+/*If latest file and folder is in local machine*/
+git init										to make local repository as git repository
+git add file_name								untracked file_name is added in staging
+git commit - m "any message"					commit the changes
+git push origin master							file is pushed to gitweb
+git diff file_name								shows the new changes
+git checkout #value								to get previous version
+git checkout master								to get latest version
+
+if you need a private repository then guthub has paid service, use gitlab.com it is completely free service.
+
+
+

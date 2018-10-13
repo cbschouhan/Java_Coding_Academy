@@ -1,0 +1,264 @@
+# Every time you install oracle, oracle installs two sample DB, scott/tiger and hr/hr
+# Unlock sample DB hr/hr 
+Open cmd promt in admin mode
+sqlplus /nolog
+conn sys as sysdba
+alter user hr identified by hr account unlock
+alter user scott identified by scott account unlock
+
+Now create new connection to unlocked DB from Oracle SQL Developer
+
+
+# To create a new conection in PLSQL Developer for DB
+# Connect to SQL developer
+Create a new connection
+Connection name - FirstDB
+Username - scott
+Password - scott
+if SID xe does not work then change it to orcl
+
+# Connect to SQL developer
+Create a new connection
+Connection name - SecondDB
+Username - hr
+Password - hr
+if SID xe does not work then change it to orcl
+
+
+
+RDBMS Day1
+# most of the java projects uses oracle db, sql is same irrespective of db
+sql libraries are same irrespective of programming language
+
+# Data model - How to structure the data logically and physically
+
+# Single DB server is used by multiple applications. Dedicated DB server is exclusively for a single application.
+Data maintenance - when we delete some data then DB mark that row not available but data is not actually deleted. There are DB processed which deletes data then 
+enough CPU resources are available.
+
+# General purpose application does not use DB e.g. MS Word. Most of the customized application are data centric.
+
+# We will be using oracle in training. Performance and data security for oracle is more popular.
+Oracle express product we are using which can be used for training and learning.
+
+# csv are flat file used to store data in simple file. No validation in cvs file so replaced by another text format xml and json
+Even though xml and json are flat files they are more like a hierarchical data model
+
+# Normalization is the process to convert raw data in to the format that can be stored in DB, It is used to improve consistency and avoid redundancy.
+# RDBMS support distributed
+
+# RDBMS ensure integrity via several constraints one of them is domain constraints e.g number, varchar(10, byte)
+You may store data in multiple tables/relations. Relation is a tech term form tables.
+Columns of a table are also called as attribute. Every attribute contains its own metadata e.g. type, name, null ability
+default value for default is null, default value for null ability is null
+
+# Transactions - ACID properties
+Atimic- A transaction occures entirely or not at all.
+Consistency - each transaction preserves the consistency of the DB
+Isolated - Concurrent transaction do not interface with each other.
+Durable - Once completed, a transaction's changes are permanent.
+
+All modern DB are ORDBMS, RDBMS is older concept.
+
+# Below shows all metadata elements are stored separately in Data discionnary tables. There are oracle specific queries and will not work on other DBs.
+# select * from user_tables;
+Shows all the tables
+# select * from USER_CONSTRAINTS;
+Shows all the Constraints
+# select * from user_indexes;
+Shows all the indexes
+# seelct * from user_sequences;
+Shows all the sequences
+
+# Normal Form
+1) Every intersection of row and column must contain ONE value
+2) Functional dependency - If primary key changes then other data is not changing then cretae separte tables.
+3) Transitional dependency - Non key attribute determines another non key attribute then cretae separte tables.
+Disadvantage of Normalization- Too many many tables and information is scattered. To get simple informationwe might have visit multiple tables.
+If too much of Normalization then we need to do denormalization.
+
+# Every table in RDBMS is in 1st normal form because RAW data can not be inserted in RDBMS table.
+If you feel more than 1 tables are merged in a sigal table then separate it to convert in 2nd normal form.
+
+RDBMS Day2
+# default sorting is asc , for descending use desc
+CLOB data type store large char obejct
+BLOB store binary large object, it can store MP3 files, profile picture, resume. DB put all the binary files under cdn and just put a pointer to that file
+
+# Number are stored as number data type in DB which can have only one . apart from number, When displayed on UI to make is user friendly number is displayed,
+separted and before displayin converted to char.
+number to char use to_char function
+date/time use to char to_char function
+char to date/time use to_date function
+char to number use to_number function
+
+select to_char(SYSDATE,'DDspth "Day of" MMspth "Month of" year') from dual
+DDspth & MMspth are available only in oracle
+Format Specification
+DD		Day of month
+MM		Month as number
+MON		Month first 3 char
+MONTH	Month full spelling
+YYYY	Year in words
+
+hh		hours
+mm		minutes
+ss		seconds
+sss		mili seconds
+
+select * from emp where to_char(hiredate,'YYYY') between 1980 and '1981'
+1981 is number but we have passed is in '' as char, db uses implicit conversion and convert it to number. So we can pass everything in ''
+
+# every select statement is followed by a table name, if we want to displayed only sysdate then we don't need data from any table.
+DUAL is a reverse word whcih we can use in place of a table when exactly we don't need any table.
+
+# select to_char(5400,'09,000') from dual
+number is converted in char, 09,000 is format
+Format Specification
+9	any digit	mandatory number
+0	optional number	optional
+.	decimal place
+$	currency symbol
+
+# Non equi join are not based on equality but based on between , < or >
+select ename,sal,grade from emp e join salgrade d on (e.sal between d.losal and d.hisal)
+
+# Inner join will get only matching records, unmatched records will be ignored. Equi and Non-Equi join can be of inner join type.
+# Data Set 1 (Left)- A,B,C,D,X,Y
+Data Set 2 (Right)- B, C, D, E, F
+
+Inner Join - B=B,C=C,D=D
+Left Join - A=null,B=B,C=C,D=D,X=null,Y=null
+Right Join - B=B, C=C, D=D, null=E, null=F
+Full Join - A=null,B=B,C=C,D=D,X=null,Y=null,null=E, null=F
+
+# To join 3 tables (A+B)+C
+# group by provide quick summary of data
+the columns which is used in group by can only be used in select clause. Other column in select can be column on which we are performing aggrigate function.
+# having clause is used to filter grouped data
+# Run Seq
+from 
+where
+group
+having
+
+# 
+x > any (y, z)==> x >y or x > z
+x > all (y, z)==> x >y AND x > z
+x > in (y, z)==> x=y or x=z
+
+# Set operations in query
+(A,B,C,D)
+(B,C,X,Y)
+UNION ALL A,B,C,S,X,Y
+UNION ALL A,B,B,C,C,S,X,Y
+Intersect B,C
+Minus A,D
+
+# You can not create non equi join by USING, ON is more favoured keyword by DBA
+
+# Stored Procedure- Instead of making multiple synchronous calls to DB from client application (Java application)
+we can make a stored proc in DB and get respoonse asynchroniously.SP are stored inside DB schema.
+Unnamed Proc are not stored in DB schema.
+# When we have to upload or download clob or blob then stored proc are nessacery.
+# set serveroutput on, it is per session, so if you want output then it is needed everytiome you login to DB.
+above is not a sql command, it is owned by oracle
+# Proc are great for performing DML type oprations. SP can't be called from a SQL query.
+# Proc and function takes lesser time to process data as they are stored in DB directory.
+
+# Views are simply schema objects they do not store user data. Views are only for selecting data.
+# View can be used inplace of subqueries benefit is if it is used at multiple places and we need to change view definition then we only need to change at one place.
+If we are using actual subqueries then we need to change subqueries at every place.2) Reduce the complexity
+If we make any changes to table schema then view is gone, there are option available in oracle to lock on the table which are used by views.
+# We have not covered index, constraints check, not null, refreential intrigrit constraints
+
+# Sample queries
+select * from DUAL
+select to_char(SYSDATE,'DD-MON-YYYY') from dual
+select to_char(SYSDATE,'DDspth "Day of" MMspth "Month of" year') from dual
+select * from emp where to_char(hiredate,'YYYY') = 1980
+select * from emp where to_char(hiredate,'YYYY') between 1980 and '1981'
+select ename, to_char(hiredate,'MON') as joining_month from emp
+select to_char(5400,'09,000') from dual
+select ename,sal from emp where to_number('1,400','9,000') < sal
+select avg(sal) as "average sal" from emp
+select to_char(avg(sal),'90,000.00') as "average sal" from emp
+
+select ename,lpad(sal,10,'*') from emp
+select ename,rpad(sal,10,'*') from emp
+select ename,initcap(ename) from emp
+select min(sal) from emp
+select hiredate, round(hiredate,'month') from emp
+select ename,hiredate, add_months(hiredate,36) as "Contract Expiry Date" from emp
+select ename,sal, comm, sal+comm as "Net Income" from emp
+select ename,sal, comm, sal+nvl(comm,0) as "Net Income" from emp
+select ename, sal,rank() over (order by sal) from emp
+/* Equi Join */
+select ename,dname from emp e join dept d on ( e.deptno=d.deptno )
+/*or */
+select ename,dname from emp join dept using (deptno)
+/*or */
+select ename,dname from emp e, dept d where e.deptno=d.deptno
+
+select * from salgrade
+select ename,sal,grade from emp e join salgrade d on (e.sal between d.losal and d.hisal)
+/* Inner Join */
+select ename,dname from emp e join dept d On (e.deptno=d.deptno)
+/* Left Outer Join */
+select ename,dname from emp e left join dept d on (e.deptno=d.deptno)
+/* Right Outer Join */
+select ename,dname from emp e right join dept d on (e.deptno=d.deptno)
+/* Full Outer Join */
+select ename,dname from emp e full join dept d on (e.deptno=d.deptno)
+/*Join using USING*/
+select first_name,department_name from employees join departments using (department_id) 
+/*Join using ON*/
+select first_name,department_name from employees join departments on (employees.department_id=departments.department_id) 
+/*Cross Join */
+select country_name,region_name from countries cross join regions
+/*Natural Join */
+select country_name,region_name from countries natural join regions
+
+create table books (
+    bookid number (4) primary key,
+    title varchar(30) not null,
+    auther varchar(20) default 'Anonymus'
+);
+
+drop table books;
+insert into books (bookid,title)
+values (101,'Head first Java')
+
+insert into books (bookid,title)
+values (102,'Head first Python')
+
+select * from books;
+
+update books 
+set auther='Chandra' where bookid=101;
+
+/*Sample SP
+set serveroutput on
+/*Unnamed or anynoums proc*/
+begin
+DBMS_OUTPUT.PUT_Line('Hello Worlkd');
+end;
+/*Call SP*/
+call proc_name()
+or
+exec proc_name
+
+/*Sample function */
+create or replace function count_emp (dept number) return number As
+p_count number;
+begin 
+select count(*) into p_count from employees
+where department_id= dept;
+return p_count;
+end;
+/*Call function */
+select department_name,count_emp(department_id) from departments;
+select count_emp(10) from dual;
+/*Sample view*/
+create or replace view as select department_id,sum(salary) as Total, min(salary) as lowest, avg(salary) as Average 
+from employees group by department_id
