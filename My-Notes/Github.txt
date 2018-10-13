@@ -24,6 +24,7 @@ git clone https_url_from_git_web_version		clone from git web folder to local mac
 git init										to make local repository as git repository
 git add file_name								untracked file_name is added in staging
 git commit - m "any message"					commit the changes
+git remote add origin gitweb_repository_url		provide repository url in gitweb
 git push origin master							file is pushed to gitweb
 git diff file_name								shows the new changes
 git checkout #value								to get previous version
