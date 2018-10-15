@@ -4,4 +4,4 @@ Java_Coding_Academy
 Parent folder name - Java Coding Academy
 
 Chandrabhan-Assignment      contains assignments which needs to be submitted
-Java-Project                contains java files
+JavaProject                contains java files
